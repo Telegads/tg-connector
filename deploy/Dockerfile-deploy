@@ -1,5 +1,5 @@
 # 
-FROM petranikitin/tg-connector:latest
+FROM petranikitin/telegads-tg-connector:latest
 
 ARG TG_APP_ID_ARG
 ARG TG_APP_HASH_ARG
