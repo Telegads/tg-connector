@@ -23,8 +23,8 @@ services:
     networks:
       - network
     volumes:
-      - ./tg_sessions:/app/sessions
-      - ./tg_bad_sessions:/app/bad_sessions
+      - ./sessions:/app/sessions
+      - ./bad_sessions:/app/bad_sessions
 
 networks:
   network:
