@@ -1,2 +1,4 @@
-api_id = <YOUR_API_ID>
-api_hash = <YOUR_API_HASH>
+import os
+
+api_id = os.environ["TG_APP_ID"]
+api_hash = os.environ["TG_APP_HASH"]
