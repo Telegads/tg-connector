@@ -8,8 +8,3 @@ app = FastAPI()
 async def get_info(channel_name):
     d = await retrieve_channel_info(channel_name)
     return d
-
-
-@app.get('/')
-async def index():
-    return 'hello'
