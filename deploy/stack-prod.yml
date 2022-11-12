@@ -14,7 +14,6 @@ services:
         parallelism: 0
         order: stop-first
       restart_policy:
-        condition: any
         delay: 5s
         max_attempts: 3
         window: 120s
@@ -28,4 +27,4 @@ services:
 
 networks:
   network:
-    driver: overlay
+    driver: bridge
