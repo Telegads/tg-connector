@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tg-connector:
-    image: peteranikitin/tg-connector-stage:latest
+    image: peteranikitin/telegads-tg-connector-stage:latest
     deploy:
       replicas: 1
       update_config:
@@ -14,12 +14,11 @@ services:
         parallelism: 0
         order: stop-first
       restart_policy:
-        condition: any
         delay: 5s
         max_attempts: 3
         window: 120s
     ports:
-      - "3003:80"
+      - "3004:80"
     networks:
       - network
     volumes:
@@ -28,4 +27,4 @@ services:
 
 networks:
   network:
-    driver: overlay
+    driver: bridge
