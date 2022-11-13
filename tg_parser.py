@@ -70,6 +70,7 @@ async def build_client(session_file):
         await client.connect()
         await client.get_me()
     except:
+        await client.disconnect()
         return False
     return client
 
@@ -91,6 +92,14 @@ async def retrieve_channel_info(channel_name):
 
     while True:
         client = await build_client(session)
+        if not client:
+            logger.error(f'bad session {session}')
+            utils.mark_bad_session(session)
+            session = get_session_file()
+            if not session:
+                return {'error': 'No accounts alive'}
+            continue
+
         async with client:
             d = await fetch(client, channel_name)
 
