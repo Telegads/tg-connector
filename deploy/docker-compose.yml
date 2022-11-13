@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tg-connector:
-    image: peteranikitin/telegads-tg-connector-stage:latest
+    image: peteranikitin/tg-connector-stage:latest
     deploy:
       replicas: 1
       update_config:
@@ -18,13 +18,13 @@ services:
         max_attempts: 3
         window: 120s
     ports:
-      - "3004:80"
+      - "3003:80"
     networks:
-      - network
+      - tg_connector_network
     volumes:
       - ./sessions:/code/sessions
       - ./bad_sessions:/code/bad_sessions
 
 networks:
-  network:
+  tg_connector_network:
     driver: bridge

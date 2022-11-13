@@ -13,4 +13,4 @@ jobs:
           host: telegads.uz
           username: ci
           password: ${{ secrets.SSH_CI_PASS }}
-          script: docker compose -f /tg-connector-prod/stack-prod.yml up -d 
+          script: docker compose -f /tg-connector-stage/docker-compose.yml -f /tg-connector-stage/docker-compose.prod.yml up -d
