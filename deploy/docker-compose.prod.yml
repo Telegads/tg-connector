@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   tg-connector:
-    image: peteranikitin/telegads-tg-connector-stage:latest
+    image: peteranikitin/telegads-tg-connector-prod:latest
     ports:
-      - "3003:80"
+      - "3004:80"
+  
