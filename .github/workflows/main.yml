@@ -25,26 +25,9 @@ jobs:
           push: true
           tags: peteranikitin/telegads-tg-connector:latest
           file: ./deploy/Dockerfile
-
-      - name: Build and push staging image
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: peteranikitin/telegads-tg-connector-stage:latest
-          file: ./deploy/Dockerfile-deploy
           build-args: |
             TG_APP_ID_ARG=${{secrets.TG_APP_ID_STAGE}}
             TG_APP_HASH_ARG=${{secrets.TG_APP_HASH_STAGE}}
-
-      - name: Build and push production image
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: peteranikitin/telegads-tg-connector-prod:latest
-          file: ./deploy/Dockerfile-deploy
-          build-args: |
-            TG_APP_ID_ARG=${{secrets.TG_APP_ID_PROD}}
-            TG_APP_HASH_ARG=${{secrets.TG_APP_HASH_PROD}}
   
   deploy:
     runs-on: ubuntu-latest
@@ -56,4 +39,4 @@ jobs:
           host: telegads.uz
           username: ci
           password: ${{ secrets.SSH_CI_PASS }}
-          script: docker compose -f /tg-connector-stage/docker-compose.yml -f /tg-connector-stage/docker-compose.stage.yml up  --force-recreate --build -d
+          script: docker compose -f /tg-connector/docker-compose.yml up  --force-recreate --build -d

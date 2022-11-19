@@ -29,3 +29,4 @@ services:
 networks:
   tg_connector_network:
     driver: bridge
+    name: tg_connector_network_stage

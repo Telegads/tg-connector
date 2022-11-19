@@ -1,9 +1,0 @@
-version: "3.8"
-
-services:
-  tg-connector:
-    build: 
-      dockerfile: ../Dockerfile
-    volumes:
-      - ../sessions:/code/sessions
-      - ../bad_sessions:/code/bad_sessions
