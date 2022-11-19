@@ -1,6 +1,6 @@
 import json
 import os
-
+import shutil
 
 def get_sessions():
     """ Возвращает пути ко всем файлам из папки sessions """
@@ -13,5 +13,5 @@ def get_sessions():
 
 def mark_bad_session(session_file):
     """ Помещаем файл сессии в папку bad sessions """
-    os.replace(os.path.join(os.getcwd(), session_file),
+    shutil.move(os.path.join(os.getcwd(), session_file),
                os.path.join(os.getcwd(), session_file.replace('sessions', 'bad_sessions')))

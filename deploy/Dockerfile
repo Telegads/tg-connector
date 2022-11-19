@@ -15,5 +15,11 @@ RUN pip uninstall -y telethon
 # 
 COPY ./ /code/
 
+ARG TG_APP_ID_ARG
+ARG TG_APP_HASH_ARG
+
+ENV TG_APP_ID=$TG_APP_ID_ARG
+ENV TG_APP_HASH=$TG_APP_HASH_ARG
+
 # 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
