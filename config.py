@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(os.environ)
+
 TG_API_ID = os.environ["TG_API_ID"]
 TG_API_HASH = os.environ["TG_API_HASH"]
 
