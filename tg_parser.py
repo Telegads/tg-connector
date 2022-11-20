@@ -6,6 +6,7 @@ import logging
 import utils
 import config
 import random
+import s3
 
 # Настраиваем логи
 logging.basicConfig(filename='errors.log',
@@ -20,8 +21,12 @@ async def get_info(client, channel_name):
     """ Сам париснг канала """
     channel_ent = await client.get_entity(channel_name)
     channel = await client(GetFullChannelRequest(channel=channel_ent))
+    
 
-    avatar = channel.full_chat.chat_photo
+    avatar_local_file = await client.download_profile_photo(channel_name)
+    avatar_s3_path = s3.uploadToS3(avatar_local_file)
+    utils.deleteFile(avatar_local_file)
+
     about = channel.full_chat.about
     name = channel.chats[0].title
     subs_count = channel.full_chat.participants_count
@@ -47,7 +52,8 @@ async def get_info(client, channel_name):
         'subs_count': subs_count,
         'views_last_30_days': views_last_30_days,
         'posts_last_30_days': posts_last_30_days,
-        'views_last_day': views_last_day
+        'views_last_day': views_last_day,
+        'avatar_path': avatar_s3_path
     }
     return info
 
@@ -65,7 +71,7 @@ async def fetch(client, channel_name):
 
 
 async def build_client(session_file):
-    client = TelegramClient(session_file, config.api_id, config.api_hash)
+    client = TelegramClient(session_file, config.TG_API_ID, config.TG_API_HASH)
     try:
         await client.connect()
         await client.get_me()

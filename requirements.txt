@@ -3,3 +3,5 @@ uvicorn
 pyaes
 rsa
 telethon
+boto3
+python-dotenv
