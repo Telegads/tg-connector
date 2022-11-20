@@ -1,4 +1,11 @@
 import os
 
-api_id = "821693" 
-api_hash = "101e2d44078f528b784fed92866db263"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TG_API_ID = os.environ["TG_API_ID"]
+TG_API_HASH = os.environ["TG_API_HASH"]
+
+S3_ACCESS_ID = os.environ["S3_ACCESS_ID"]
+S3_ACCESS_KEY = os.environ["S3_ACCESS_KEY"]
