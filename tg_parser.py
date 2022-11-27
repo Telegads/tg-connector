@@ -94,7 +94,7 @@ async def retrieve_channel_info(channel_name):
     """ Создаем клиент Telethon и собираем информацию """
     session = get_session_file()
     if not session:
-        return {'error': 'No accounts alive'}
+        raise ValueError('No accounts alive')
 
     while True:
         client = await build_client(session)
@@ -103,7 +103,7 @@ async def retrieve_channel_info(channel_name):
             utils.mark_bad_session(session)
             session = get_session_file()
             if not session:
-                return {'error': 'No accounts alive'}
+                raise ValueError('No accounts alive')
             continue
 
         async with client:
@@ -114,7 +114,7 @@ async def retrieve_channel_info(channel_name):
             utils.mark_bad_session(session)
             session = get_session_file()
             if not session:
-                return {'error': 'No accounts alive'}
+                raise ValueError('No accounts alive')
             continue
 
         return d
