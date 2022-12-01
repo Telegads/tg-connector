@@ -7,6 +7,11 @@ import utils
 import config
 import random
 import s3
+from sentry_sdk import capture_exception
+
+class BadChannelNameException(Exception):
+    def __init__(self, name: str):
+        self.name = name
 
 # Настраиваем логи
 logging.basicConfig(filename='errors.log',
@@ -65,9 +70,10 @@ async def fetch(client, channel_name):
         return r
     except Exception as ex:
         if isinstance(ex, FloodError):
+            logger.error(f'Channel {channel_name}: baned for flood')
             return 'flood'
         logger.error(f'Channel {channel_name}: {ex}')
-        return {'error': 'Internal error'}
+        raise BadChannelNameException({f'Channel {channel_name}: {ex}'})
 
 
 async def build_client(session_file):
@@ -89,7 +95,6 @@ def get_session_file():
     session = random.choice(sessions)
     return session
 
-
 async def retrieve_channel_info(channel_name):
     """ Создаем клиент Telethon и собираем информацию """
     session = get_session_file()
@@ -105,16 +110,16 @@ async def retrieve_channel_info(channel_name):
             if not session:
                 raise ValueError('No accounts alive')
             continue
-
+        
         async with client:
             d = await fetch(client, channel_name)
-
         if d == 'flood':
             logger.debug(f'{session} flood error')
+            capture_exception("flood")
             utils.mark_bad_session(session)
             session = get_session_file()
             if not session:
                 raise ValueError('No accounts alive')
             continue
-
         return d
+
