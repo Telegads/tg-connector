@@ -5,3 +5,4 @@ rsa
 telethon
 boto3
 python-dotenv
+sentry-sdk[fastapi]
