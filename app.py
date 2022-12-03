@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
 from fastapi import status
 import sentry_sdk
 
@@ -17,15 +16,23 @@ app = FastAPI()
 async def get_info(channel_name):
     try:
         d = await retrieve_channel_info(channel_name)
-        return d
+        return {
+            "status": "success",
+            "data": d
+            }
     except ValueError:
-        raise HTTPException(
-                status_code=500,
-                detail="No accounts left"
-            ) 
+        return {
+            "status": "error",
+            "data": "No accounts left"
+        }
     except BadChannelNameException as error:
+        return {
+            "status": "error",
+            "data": "Channel not found"
+        } 
+    except:
         raise HTTPException(
-                status_code=500,
-                detail="Channel not found"
-            ) 
+            status_code=500,
+            detail="Internal error"
+        )
 
