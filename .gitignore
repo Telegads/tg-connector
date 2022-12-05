@@ -5,3 +5,6 @@ errors.log
 .env
 
 .DS_Store
+
+/sessions
+/bad_sessions
