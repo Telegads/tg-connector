@@ -27,10 +27,14 @@ async def get_info(client, channel_name):
     channel_ent = await client.get_entity(channel_name)
     channel = await client(GetFullChannelRequest(channel=channel_ent))
     
-
     avatar_local_file = await client.download_profile_photo(channel_name)
-    avatar_s3_path = s3.uploadToS3(avatar_local_file)
-    utils.deleteFile(avatar_local_file)
+    avatar_s3_path = ""
+
+    if (avatar_local_file == None):
+        avatar_local_file = ""
+    else:
+        avatar_s3_path = s3.uploadToS3(avatar_local_file)
+        utils.deleteFile(avatar_local_file)
 
     about = channel.full_chat.about
     name = channel.chats[0].title
