@@ -1,0 +1,12 @@
+environments:
+  production:
+    values:
+      - env: "production"
+      - rootPath: "../helmfile"
+---
+releases:
+  - name: tg-connector
+    chart: charts/tg-connector
+    version: 0.0.1
+    values:
+      - values/{{ .Environment.Name }}/main.yaml

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: tg-connector-{{ .Values.env }}-sessions
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce 
+  resources:
+    requests:
+      storage: {{ .Values.capacity.storage }} 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: tg-connector-{{ .Values.env }}-bad-sessions
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce 
+  resources:
+    requests:
+      storage: {{ .Values.capacity.storage }} 

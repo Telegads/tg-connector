@@ -8,3 +8,5 @@ errors.log
 
 /sessions
 /bad_sessions
+
+.vscode

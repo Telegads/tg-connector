@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name:  tg-connector-{{ .Values.env }}
+  annotations:
+    kubernetes.io/ingress.class: nginx    
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.host }}
+      secretName:  tg-connector-ssl-{{ .Values.env }}
+  rules:
+    - host: {{ .Values.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  tg-connector-{{ .Values.env }}
+                port:
+                  number: 80
