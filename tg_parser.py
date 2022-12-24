@@ -107,6 +107,7 @@ async def retrieve_channel_info(channel_name):
 
     while True:
         client = await build_client(session)
+        print(client)
         if not client:
             logger.error(f'bad session {session}')
             utils.mark_bad_session(session)
@@ -114,16 +115,26 @@ async def retrieve_channel_info(channel_name):
             if not session:
                 raise ValueError('No accounts alive')
             continue
+            # break
         
-        async with client:
-            d = await fetch(client, channel_name)
-        if d == 'flood':
-            logger.debug(f'{session} flood error')
-            capture_exception("flood")
-            utils.mark_bad_session(session)
-            session = get_session_file()
-            if not session:
-                raise ValueError('No accounts alive')
-            continue
-        return d
+        async with client: 
+            try:
+                d = await fetch(client, channel_name)
+                if d == 'flood':
+                    logger.debug(f'{session} flood error')
+                    capture_exception("flood")
+                    utils.mark_bad_session(session)
+                    session = get_session_file()
+                    if not session:
+                        raise ValueError('No accounts alive')
+                    continue
+                return d
+            except:
+                # utils.mark_bad_session(session)
+                session = get_session_file()
+                if not session:
+                    raise ValueError('No accounts alive')
+                continue
+        
+        
 
