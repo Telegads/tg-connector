@@ -13,6 +13,10 @@ class BadChannelNameException(Exception):
     def __init__(self, name: str):
         self.name = name
 
+class NoAccents(Exception):
+    def __init__(self, name: str):
+        self.name = name
+
 # Настраиваем логи
 logging.basicConfig(filename='errors.log',
                     filemode='a',
@@ -103,7 +107,7 @@ async def retrieve_channel_info(channel_name):
     """ Создаем клиент Telethon и собираем информацию """
     session = get_session_file()
     if not session:
-        raise ValueError('No accounts alive')
+        raise NoAccents('No accounts alive')
 
     while True:
         client = await build_client(session)
@@ -113,27 +117,30 @@ async def retrieve_channel_info(channel_name):
             utils.mark_bad_session(session)
             session = get_session_file()
             if not session:
-                raise ValueError('No accounts alive')
+                raise NoAccents('No accounts alive')
             continue
             # break
         
         async with client: 
             try:
                 d = await fetch(client, channel_name)
+                print(d)
                 if d == 'flood':
                     logger.debug(f'{session} flood error')
                     capture_exception("flood")
                     utils.mark_bad_session(session)
                     session = get_session_file()
                     if not session:
-                        raise ValueError('No accounts alive')
+                        raise NoAccents('No accounts alive')
                     continue
                 return d
+            except BadChannelNameException: 
+                raise BadChannelNameException("Channel not found")
             except:
                 # utils.mark_bad_session(session)
                 session = get_session_file()
                 if not session:
-                    raise ValueError('No accounts alive')
+                    raise NoAccents('No accounts alive')
                 continue
         
         

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import sentry_sdk
 
-from tg_parser  import retrieve_channel_info, BadChannelNameException
+from tg_parser import retrieve_channel_info, BadChannelNameException, NoAccents
 
 origins = [
     "https://staging.telegads.uz",
@@ -36,7 +36,7 @@ async def get_info(channel_name):
             "status": "success",
             "data": d
             }
-    except ValueError:
+    except NoAccents:
         return {
             "status": "error",
             "data": "No accounts left"
@@ -46,7 +46,8 @@ async def get_info(channel_name):
             "status": "error",
             "data": "Channel not found"
         } 
-    except:
+    except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=500,
             detail="Internal error"
