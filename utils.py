@@ -13,7 +13,8 @@ def get_sessions():
 
 def mark_bad_session(session_file):
     """ Помещаем файл сессии в папку bad sessions """
-    print(os.path.join(os.getcwd(), session_file.replace('sessions', 'bad_sessions')))
+    print(os.path.join(os.getcwd(), session_file))
+    
     shutil.move(os.path.join(os.getcwd(), session_file),
                os.path.join(os.getcwd(), session_file.replace('sessions', 'bad_sessions')))
 
