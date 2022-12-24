@@ -6,3 +6,4 @@ env: production
 
 capacity:
   storage: 200Mi
+
