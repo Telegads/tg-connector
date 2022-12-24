@@ -59,6 +59,7 @@ jobs:
             TG_API_HASH_ARG: ${{secrets.TG_APP_HASH_STAGE}}
             S3_ACCESS_ID_ARG: ${{secrets.S3_ACCESS_ID}}
             S3_ACCESS_KEY_ARG: ${{secrets.S3_ACCESS_KEY}}
+            release_date_time_utc: ${{steps.current-time.outputs.formattedTime}}
           write-mode: append
 
       - name: print values
