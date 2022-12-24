@@ -1,8 +1,16 @@
 from fastapi import FastAPI, HTTPException
-from fastapi import status
+from fastapi.middleware.cors import CORSMiddleware
+
 import sentry_sdk
 
 from tg_parser  import retrieve_channel_info, BadChannelNameException
+
+origins = [
+    "https://staging.telegads.uz",
+    "https://telegads.uz",
+    "http://localhost:3000",
+]
+
 
 sentry_sdk.init(
     dsn="https://a13775155f784e40b04cd464bb87e01f@o4503987462537216.ingest.sentry.io/4504251833581568",
@@ -11,6 +19,14 @@ sentry_sdk.init(
 )
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/get_info/{channel_name}')
 async def get_info(channel_name):
