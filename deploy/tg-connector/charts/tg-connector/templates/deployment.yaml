@@ -34,7 +34,7 @@ spec:
           image: peteranikitin/telegads-tg-connector:latest
           env:
             - name: TG_API_ID
-              value: {{ .Values.TG_API_ID }}
+              value: {{ .Values.TG_API_ID | quote }}
 
             - name: TG_API_HASH
               value: {{ .Values.TG_API_HASH }}
