@@ -1,0 +1,8 @@
+host: tg-connector.telegads.uz
+
+replicas: 1
+
+env: production
+
+capacity:
+  storage: 200Mi

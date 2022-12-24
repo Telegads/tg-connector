@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: tg-connector-{{ .Values.env }}
+  labels:
+    app: tg-connector-{{ .Values.env }}
+
+spec:
+  replicas: {{ .Values.replicas }}
+  
+  selector:
+    matchLabels:
+      app: tg-connector-{{ .Values.env }}
+  
+  template:
+    metadata:
+      labels:
+        app: tg-connector-{{ .Values.env }}
+      annotations:
+        deploy-date: {{ .Values.release_date_time_utc }}
+    
+    spec:
+      volumes:
+        - name: tg-connector-sessions-storage
+          persistentVolumeClaim:
+            claimName: tg-connector-{{ .Values.env }}-sessions
+        - name: tg-connector-bad-sessions-storage
+          persistentVolumeClaim:
+            claimName: tg-connector-{{ .Values.env }}-bad-sessions
+      containers:
+        - name: tg-connector
+          image: peteranikitin/telegads-tg-connector:latest
+          env:
+            - name: TG_API_ID
+              value: {{ .Values.TG_API_ID }}
+
+            - name: TG_API_HASH
+              value: {{ .Values.TG_API_HASH_ARG }}
+
+            - name: S3_ACCESS_ID
+              value: {{ .Values.S3_ACCESS_ID }}
+
+            - name: S3_ACCESS_KEY
+              value: {{ .Values.S3_ACCESS_KEY }}
+         
+          ports:
+            - containerPort: 80
+          
+          volumeMounts:
+            - mountPath: "/code/sessions"
+              name: tg-connector-sessions-storage
+            - mountPath: "/code/bad_sessions"
+              name: tg-connector-bad-sessions-storage
