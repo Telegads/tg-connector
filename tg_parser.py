@@ -7,7 +7,6 @@ import utils
 import config
 import random
 import s3
-from sentry_sdk import capture_exception
 
 class BadChannelNameException(Exception):
     def __init__(self, name: str):
@@ -111,23 +110,18 @@ async def retrieve_channel_info(channel_name):
 
     while True:
         client = await build_client(session)
-        print(client)
         if not client:
             logger.error(f'bad session {session}')
             utils.mark_bad_session(session)
             session = get_session_file()
             if not session:
                 raise NoAccents('No accounts alive')
-            continue
-            # break
         
         async with client: 
             try:
                 d = await fetch(client, channel_name)
-                print(d)
                 if d == 'flood':
                     logger.debug(f'{session} flood error')
-                    capture_exception("flood")
                     utils.mark_bad_session(session)
                     session = get_session_file()
                     if not session:
